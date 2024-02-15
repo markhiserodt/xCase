@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @SecurityScheme(
     name = "Authorization",
     type = SecuritySchemeType.HTTP,
@@ -19,6 +21,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/caseDetails")
 public class CaseController {
+
+    @SecurityRequirement(name = "Authorization")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", description = "Invalid case name supplied", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Case not found", content = @Content),
+    })
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Case getCaseDetails(@RequestParam(name = "caseId") String caseId,
+                        @MatrixVariable(name = "fields", pathVar = "caseId", required = false) List<String> fields) {
+        return new Case();
+    }
 
     @SecurityRequirement(name = "Authorization")
     @ApiResponses(value = {
